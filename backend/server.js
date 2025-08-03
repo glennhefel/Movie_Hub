@@ -11,6 +11,7 @@ import dotenv from 'dotenv';
 
 import usersRouter from './routes/users.js';
 import mediaRouter from './routes/media.js';
+import ratingRoutes from './routes/ratings.js';
 // import exercisesRouter from './routes/exercises.js'; // Uncomment if you have this file
 
 dotenv.config();
@@ -32,6 +33,7 @@ connection.once('open', () => {
 // app.use('/exercises', exercisesRouter); 
 app.use('/users', usersRouter);
 app.use('/media', mediaRouter);
+app.use('/ratings', ratingRoutes);
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
