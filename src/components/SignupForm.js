@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import InputField from './InputField';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function SignupForm() {
   const [form, setForm] = useState({
@@ -10,17 +11,32 @@ function SignupForm() {
     confirmPassword: '',
   });
 
-  const navigate = useNavigate(); // <-- Place this here
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add validation and submit logic here
-    // If signup is successful:
-    navigate('/home'); // <-- Redirect to home page
+
+    if (form.password !== form.confirmPassword) {
+      alert("❌ Passwords do not match");
+      return;
+    }
+
+    try {
+      const response = await axios.post('http://localhost:3000/api/auth/signup', {
+        username: form.name, // assuming username is name
+        password: form.password
+        // email is unused in backend for now; optional if needed
+      });
+
+      alert("Signup successful!");
+      navigate('/home');
+    } catch (err) {
+      alert(err.response?.data?.message || "Signup failed");
+    }
   };
 
   return (
