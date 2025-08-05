@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './HomePage.css';
 
-function HomePage() {
+function Top100Page() {
   const username = localStorage.getItem('username');
   const [media, setMedia] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,7 +14,11 @@ function HomePage() {
         return res.json();
       })
       .then((data) => {
-        setMedia(data);
+        // Sort by average_rating descending and take top 100
+        const sorted = data
+          .sort((a, b) => (b.average_rating || 0) - (a.average_rating || 0))
+          .slice(0, 100);
+        setMedia(sorted);
         setLoading(false);
       })
       .catch((err) => {
@@ -26,16 +30,12 @@ function HomePage() {
   return (
     <div className="homepage-dark" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-        
         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
           <li className="nav-item">
             <Link className="nav-link" to="/home">Home</Link>
           </li>
           <li className="nav-item">
-            <Link className="nav-link" to="/top100">🏆 Top 100</Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/addmedia">➕ Add Media</Link>
+            <Link className="nav-link active" to="/top100">🏆 Top 100</Link>
           </li>
         </ul>
         <form className="d-flex me-2">
@@ -49,7 +49,7 @@ function HomePage() {
       </nav>
 
       <div className="container mt-4 text-light" style={{ flex: 1 }}>
-        <h1 className="display-4 mb-4">Entertainment Galore</h1>
+        <h1 className="display-4 mb-4">Top 100 Rated</h1>
         <hr className="mb-4 border-light" />
         <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
           {loading ? (
@@ -59,7 +59,7 @@ function HomePage() {
               <div className="alert alert-info text-center">No media items found.</div>
             </div>
           ) : (
-            [...media].reverse().map((item) => (
+            media.map((item) => (
               <div className="col" key={item._id}>
                 <div className="card h-100 shadow-sm media-card bg-dark text-light">
                   <img
@@ -98,4 +98,4 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export default Top100Page;

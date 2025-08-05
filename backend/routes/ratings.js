@@ -1,10 +1,10 @@
 import express from 'express';
 import Rating from '../models/review.model.js';
 import Media from '../models/media.model.js';
-import User from '../models/user.model.js'; // only if you want to populate user
+import User from '../models/user.model.js'; 
 const router = express.Router();
 
-// 🟩 GET all ratings for a media item
+
 router.get('/media/:mediaId', async (req, res) => {
   try {
     const ratings = await Rating.find({ media: req.params.mediaId })
@@ -17,14 +17,14 @@ router.get('/media/:mediaId', async (req, res) => {
   }
 });
 
-// 🟦 POST or UPDATE a rating for a media (by a user)
+
 router.post('/:mediaId', async (req, res) => {
   try {
     const { rating, comment, userId } = req.body;
 
     const existing = await Rating.findOne({
       media: req.params.mediaId,
-      user: userId
+      user: username
     });
 
     if (existing) {
@@ -48,3 +48,5 @@ router.post('/:mediaId', async (req, res) => {
     res.status(500).json({ error: 'Failed to post rating' });
   }
 });
+
+export default router;

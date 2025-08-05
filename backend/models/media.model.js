@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const mediaTypes = ["Anime", "Movies", "TV_series"];
 const genreTypes = [
-  "action", "psychological", "comedy", "romance", "sci-fi", "cyberpunk"
+  "Action", "Psychological", "Comedy", "Romance", "Sci-Fi", "Cyberpunk", "Drama", "Fantasy", "Adventure", "Mystery", "Horror", "Thriller", "Slice of Life", "Supernatural"
 ];
 
 const mediaSchema = new mongoose.Schema({
@@ -14,7 +14,7 @@ const mediaSchema = new mongoose.Schema({
   description: {
     type: String,
     default: "Theres nothing here...",
-    maxlength: 1000
+    maxlength: 10000
   },
   poster: { type: String, maxlength: 500 },
 }, {

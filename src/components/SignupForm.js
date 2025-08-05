@@ -21,21 +21,31 @@ function SignupForm() {
     e.preventDefault();
 
     if (form.password !== form.confirmPassword) {
-      alert("❌ Passwords do not match");
+      alert("Passwords do not match");
       return;
     }
 
-    try {
-      const response = await axios.post('http://localhost:3000/api/auth/signup', {
-        username: form.name, // assuming username is name
-        password: form.password
-        // email is unused in backend for now; optional if needed
-      });
+     try {
+    const res = await axios.post('http://localhost:5000/users/signup', {
+      username: form.name,
+      password: form.password,
+      email: form.email,
+    });
+
+    const user = res.data.user;
+
 
       alert("Signup successful!");
+      localStorage.setItem('username', form.username || form.name);
+      //localStorage.setItem('userId', user._id);
+      
       navigate('/home');
     } catch (err) {
-      alert(err.response?.data?.message || "Signup failed");
+      alert(
+        err.response?.data?.error ||
+        err.response?.data?.message ||
+        "Signup failed"
+      );
     }
   };
 

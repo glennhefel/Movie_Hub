@@ -10,8 +10,9 @@ export const signup = (req, res) => {
   if (exists)
     return res.status(409).json({ error: "User already exists" });
 
-  users.push({ username, password });
-  res.status(201).json({ message: "Signup successful" });
+  const newUser = { username, password, isAdmin: username === "admin", _id: generateId() };
+  users.push(newUser);
+  res.status(201).json({ message: "Signup successful", user: newUser });
 };
 
 export const login = (req, res) => {
@@ -21,5 +22,5 @@ export const login = (req, res) => {
   if (!user)
     return res.status(401).json({ error: "Invalid credentials" });
 
-  res.status(200).json({ message: "Login successful" });
+  res.status(200).json({ message: "Login successful", user });
 };

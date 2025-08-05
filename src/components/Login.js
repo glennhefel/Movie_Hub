@@ -15,13 +15,18 @@ function LoginForm() {
     e.preventDefault();
 
     try {
-      const res = await axios.post('http://localhost:3000/auth/login', {
+      const res = await axios.post('http://localhost:5000/users/login', {
         username: form.username,
         password: form.password,
       });
-
+      const user = res.data.user;
+      console.log(res.data.user); 
       localStorage.setItem('token', res.data.token);
       alert('Login successful!');
+      localStorage.setItem('username', form.username || form.name);
+      localStorage.setItem('userId', user._id);
+      
+     
       navigate('/home');
     } catch (err) {
       alert(err.response?.data?.message || 'Login failed');
